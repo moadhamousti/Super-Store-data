@@ -5,6 +5,8 @@ import os
 import toml
 import warnings
 warnings.filterwarnings('ignore')
+import json
+import numpy as np
 
 st.set_page_config(page_title="Superstore!!!", page_icon=":bar_chart:",layout="wide")
 
@@ -162,6 +164,64 @@ with chart2:
     fig.update_traces(text = filtered_df["Category"], textposition = "inside")
     st.plotly_chart(fig,use_container_width=True)
 
+
+
+
+us_states = json.load(open("us_states.json"))
+
+    # Read the CSV data
+df = pd.read_csv("Superstore.csv")
+
+    # Create a mapping of state names to IDs
+state_id_map = {}
+for feature in us_states['features']:
+        feature['id'] = feature['properties']['STATE']
+        state_id_map[feature['properties']['NAME']] = feature['id']
+
+# Function to remove commas and convert to int
+def remove_commas_and_convert_to_int(s):
+        if isinstance(s, str):
+            return int(s.replace(",", ""))
+        elif isinstance(s, (int, float)):
+            return int(s)
+        else:
+            return s
+
+# Apply the function to the 'Sales' column
+df['Sales'] = df['Sales'].apply(remove_commas_and_convert_to_int)
+
+# Add an 'id' column to the DataFrame
+df['id'] = df['State'].apply(lambda x: state_id_map.get(x, -1))  # Use -1 as default if state not found
+df['SalesScale'] = np.log10(df['Sales'])
+# Streamlit app
+st.subheader("Superstore Sales by states")
+
+# Create and display the choropleth map
+# fig = go.Figure(go.Choropleth(
+#     geojson=us_states,
+#     locations=df['id'],
+#     z=df['Sales'],
+#     color='SalesScale',
+#     autocolorscale=False,
+#     marker_line_color='white',
+#     colorbar_title="Sales"
+# ))
+
+color_scale = [
+        [0.8, 'rgb(0,191,255)'],  
+        [0.9, 'rgb(139,0,139)'],   
+        [1.0, 'rgb(178,34,34)'],    
+]
+
+fig = px.choropleth(df, locations='id', geojson=us_states, color='SalesScale' ,scope='north america', color_continuous_scale=color_scale, hover_name='State', hover_data=['Sales'])
+
+fig.update_geos(fitbounds="locations", visible=False)
+fig.update_layout(geo=dict(bgcolor='rgba(0,0,0,0)'))
+fig.update_layout(width=800)
+st.plotly_chart(fig)
+
+
+
 import plotly.figure_factory as ff
 st.subheader(":point_right: Month wise Sub-Category Sales Summary")
 with st.expander("Summary_Table"):
@@ -181,8 +241,36 @@ data1['layout'].update(title="Relationship between Sales and Profits using Scatt
                        yaxis = dict(title = "Profit", titlefont = dict(size=19)))
 st.plotly_chart(data1,use_container_width=True)
 
+
+
+st.subheader('Profit by Cities (Overall profit between 2014 and 2018)')
+
+# Read the CSV file
+df = pd.read_csv("Superstore.csv")
+
+# Create a Streamlit dropdown to select the state
+selected_state = st.selectbox("Select a State", df['State'].unique())
+
+# Filter the data for the selected state
+filtered_df = df[df['State'] == selected_state]
+
+# Aggregate profit values for cities with multiple entries
+filtered_df = filtered_df.groupby('City')['Profit'].sum().reset_index()
+
+# Create a bar chart
+fig = px.bar(filtered_df, x='City', y='Profit', title=f'Profit by City in {selected_state}')
+fig.update_xaxes(title_text='City')
+fig.update_yaxes(title_text='Profit')
+
+# Set the chart width to 100% of the page
+fig.update_layout(width=800)  # You can adjust the width as needed
+
+# Show the bar chart
+st.plotly_chart(fig)
+
 with st.expander("View Data"):
     st.write(filtered_df.iloc[:500,1:20:2].style.background_gradient(cmap="Oranges"))
+
 
 # Download orginal DataSet
 csv = df.to_csv(index = False).encode('utf-8')
