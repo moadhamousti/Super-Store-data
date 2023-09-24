@@ -46,7 +46,7 @@ with open('style.css') as f:
 
 @st.cache_data
 def load_config():
-    with open(".streamlit/config.toml") as f:
+    with open("config.toml") as f:
         config = toml.loads(f.read())
     return config
 
@@ -194,7 +194,7 @@ df['Sales'] = df['Sales'].apply(remove_commas_and_convert_to_int)
 df['id'] = df['State'].apply(lambda x: state_id_map.get(x, -1))  # Use -1 as default if state not found
 df['SalesScale'] = np.log10(df['Sales'])
 # Streamlit app
-st.subheader("Superstore Sales by states")
+st.subheader("Choropleth map of Superstore Sales by states")
 
 # Create and display the choropleth map
 # fig = go.Figure(go.Choropleth(
@@ -213,13 +213,15 @@ color_scale = [
         [1.0, 'rgb(178,34,34)'],    
 ]
 
-fig = px.choropleth(df, locations='id', geojson=us_states, color='SalesScale' ,scope='north america', color_continuous_scale=color_scale, hover_name='State', hover_data=['Sales'])
+fig = px.choropleth(df, locations='id', geojson=us_states, color='SalesScale' , color_continuous_scale=color_scale, hover_name='State', hover_data=['Sales'])
 
 fig.update_geos(fitbounds="locations", visible=False)
 fig.update_layout(geo=dict(bgcolor='rgba(0,0,0,0)'))
 fig.update_layout(width=800)
 st.plotly_chart(fig)
 
+
+# ,scope='north america'
 
 
 import plotly.figure_factory as ff
@@ -275,6 +277,12 @@ with st.expander("View Data"):
 # Download orginal DataSet
 csv = df.to_csv(index = False).encode('utf-8')
 st.download_button('Download Data', data = csv, file_name = "Data.csv",mime = "text/csv")
+
+
+
+
+
+
 
 
 
