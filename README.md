@@ -2,11 +2,11 @@
 
 ### Super Store in The USA Dashboard Using Streamlit :
 
-- Contains Sales Between : 2014 - 2020
-- Contains Chart By Sales Category , By Region..etc
-- You Can Choose Between Regions , States or Cities.
-- Contains a Hierarchical view of Sales (Using TreeMap)
-- Chorepleth Map Of Sales By State...etc
+☑️ - Contains Sales Between : 2014 - 2020
+☑️ - Contains Chart By Sales Category , By Region..etc
+☑️ - You Can Choose Between Regions , States or Cities.
+☑️ - Contains a Hierarchical view of Sales (Using TreeMap)
+☑️ - Chorepleth Map Of Sales By State...etc
 
 
 
