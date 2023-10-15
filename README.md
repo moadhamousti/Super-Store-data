@@ -1,4 +1,4 @@
-# Super-Store-data-Sample (USA) 🏬 :
+# Super-Store-data-Sample (USA) 🏬:
 
 ### Super Store in The USA Dashboard Using Streamlit :
 
@@ -12,7 +12,6 @@
 ☑️ - Contains a Hierarchical view of Sales (Using TreeMap).
 
 ☑️ - Chorepleth Map Of Sales By State...etc
-
 
 
 ### Screen Shoots 📷 :
