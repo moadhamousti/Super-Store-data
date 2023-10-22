@@ -3,7 +3,6 @@
 ### Super Store in The USA Dashboard Using Streamlit :
 
 
-
 ☑️ - Contains Sales Between : 2014 - 2020.
 
 ☑️ - Contains Chart By Sales Category , By Region..etc
