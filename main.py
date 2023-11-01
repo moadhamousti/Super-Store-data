@@ -7,8 +7,6 @@ import warnings
 warnings.filterwarnings('ignore')
 import json
 import numpy as np
-import pandas as pd
-import pandas as pd
 
 st.set_page_config(page_title="Superstore!!!", page_icon=":bar_chart:",layout="wide")
 
