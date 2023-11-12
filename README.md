@@ -1,4 +1,4 @@
-# Super-Store-data-Sample (USA) 🏬:
+# Super-Store-data-Sample (USA) 🏬: 
 
 ### Super Store in The USA Dashboard Using Streamlit :
   
